@@ -11,6 +11,7 @@ let blinkHigh = "#ff1414";
 let blinkLow = "#FFB8B8";
 let blinkerColor = blinkLow;
 let blinkerColor2 = blinkLow;
+let tachColor = "#52ff52";
 function setup() {
 
     let width = windowWidth-(windowWidth/6);
@@ -21,6 +22,12 @@ function setup() {
 
 function draw() {
     if (frameCount % 60 == 0) { // if the frameCount is divisible by 60, then a second has passed. it will stop at 0
+        if(tacho >.65){
+            tachColor = "#fffa42";
+        }
+        else{
+            tachColor = "#52ff52"
+        }
         if (keyCode == 65 && leftTurn) {
             if(leftState){
                 blinkerColor = blinkHigh;
@@ -44,9 +51,11 @@ function draw() {
         if (keyCode == 87 && stopCar != true && currentSpeed <= 100) {
             if(currentSpeed % 20 == 0){
                 tacho = .10;
+                
+                tachColor = "#52ff52"
             }
             else{
-                tacho += .03;
+                tacho += .033;
             }           
             speedUp = true;
             slowDown = false;
@@ -55,9 +64,10 @@ function draw() {
         else if (keyCode == 83 && stopCar != true && currentSpeed > 0) {
             if(currentSpeed % 20 == 0){
                 tacho = .70;
+                tachColor = "#fffa42";
             }
             else{
-                tacho -= .03;
+                tacho -= .033;
             }  
             slowDown = true;
             speedUp = false;
@@ -94,7 +104,7 @@ function draw() {
     text("5000", width*.79, height*.08);
     line(width*.82, height*.1, width*.82, height*.4);
 
-    fill(color("#d3d3d3"));
+    fill(color(tachColor));
     rectMode(CORNERS);
     rect(width*.01, height*.1, width*tacho, height*.4, 10);
     //rect(width*.1, height*.1, width*tacho, heigh*.1);
