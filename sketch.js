@@ -15,6 +15,7 @@ let blinkerColor = blinkLow;
 let blinkerColor2 = blinkLow;
 let tachColor = "#52ff52";
 let mode = 0;
+let stillMoving = false;
 function setup() {
     img = loadImage("images/abs_engine_airbag_traction.png");
     map = loadImage("images/maps.jpg");
@@ -76,10 +77,14 @@ function draw() {
             }
             else{
                 tacho -= .033;
-            }  
+            }
             slowDown = true;
             speedUp = false;
             currentSpeed -= 1
+        }
+        else if(stillMoving){
+            milesLeft -=.1;
+            trip+= .1;
         }
     }
 
@@ -217,13 +222,15 @@ function leftPressed(){
     }
 }
 
-
+ 
 function keyPressed() {
     if (keyCode == 87) {
+        stillMoving = true;
         stopCar = false
     }
     else if(keyCode == 83 && firstPress){
         stopCar = false;
+        stillMoving = false;
         firstPress = false;
     }
     else if (keyCode == 83 && speedUp == true) {
