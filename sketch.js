@@ -14,9 +14,12 @@ let blinkLow = "#FFB8B8";
 let blinkerColor = blinkLow;
 let blinkerColor2 = blinkLow;
 let tachColor = "#52ff52";
+let mode = 0;
 function setup() {
     img = loadImage("images/abs_engine_airbag_traction.png");
-
+    map = loadImage("images/maps.jpg");
+    spotify = loadImage("images/spotify.png");
+    phone = loadImage("images/phone.png");
     let width = windowWidth-(windowWidth/6);
     let height = windowHeight-(windowHeight/8)
     let canvas = createCanvas(width, height);
@@ -112,7 +115,6 @@ function draw() {
     fill(color(tachColor));
     rectMode(CORNERS);
     rect(width*.01, height*.1, width*tacho, height*.4, 10);
-    //rect(width*.1, height*.1, width*tacho, heigh*.1);
     
     rectMode(CENTER);
     //Speedometer
@@ -143,10 +145,24 @@ function draw() {
     line(width*.13, height *.85, width *.27, height*.85);
     circle(width*.145, height*.89, height*.05);
     text("Reset Trip ", width*.27, height*.90);
-    
+
     //Non-Vehicle Info
     fill(color("#E8E8E8"));
     rect(width - width*.15, height*.7, width - width*.75, height - height*.5, 10);
+    line(width*.73, height*.86, width*.97, height*.86);
+    triangle(width*.78, height*.90, width*.83, height*.925, width*.83, height*.875);
+    triangle(width*.92, height*.90, width*.87, height*.925, width*.87, height*.875);
+    switch(mode) {
+        case 0:
+            image(map,width*.73,height*.46,width*.24,height*.38);
+          break;
+        case 1:
+            image(phone,width*.73,height*.46,width*.24,height*.38);
+          break;
+        case 2:
+            image(spotify,width*.73,height*.46,width*.24,height*.38);
+          break;
+      }
 
     //Engine Temp
     fill(color("#E8E8E8"));
@@ -183,6 +199,24 @@ function draw() {
 function windowResized() {
     resizeCanvas(windowWidth-(windowWidth/6), windowHeight-(windowHeight/8));
 }
+function rightPressed(){
+    if(mode == 2){
+        mode = 0;
+    }
+    else{
+        mode+=1;
+    }
+}
+function leftPressed(){
+    console.log(mode);
+    if(mode == 0){
+        mode = 2;
+    }
+    else{
+        mode-=1;
+    }
+}
+
 
 function keyPressed() {
     if (keyCode == 87) {
@@ -201,5 +235,11 @@ function keyPressed() {
     }
     if (keyCode == 68){
         RightTurn = !RightTurn;
+    }
+    if(keyCode == 37){
+        leftPressed();
+    }
+    if(keyCode == 39){
+        leftPressed();
     }
 }
