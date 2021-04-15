@@ -7,12 +7,15 @@ let firstPress = false;
 let currentSpeed = 0;
 let tacho = .10;
 let leftState = false;
+let milesLeft = 250;
+let trip = 0;
 let blinkHigh = "#ff1414";
 let blinkLow = "#FFB8B8";
 let blinkerColor = blinkLow;
 let blinkerColor2 = blinkLow;
 let tachColor = "#52ff52";
 function setup() {
+    img = loadImage("images/abs_engine_airbag_traction.png");
 
     let width = windowWidth-(windowWidth/6);
     let height = windowHeight-(windowHeight/8)
@@ -21,7 +24,7 @@ function setup() {
 }
 
 function draw() {
-    if (frameCount % 60 == 0) { // if the frameCount is divisible by 60, then a second has passed. it will stop at 0
+    if (frameCount % 15 == 0) { // if the frameCount is divisible by 60, then a second has passed. it will stop at 0
         if(tacho >.65){
             tachColor = "#fffa42";
         }
@@ -56,6 +59,8 @@ function draw() {
             }
             else{
                 tacho += .033;
+                milesLeft -=.1;
+                trip+= .1;
             }           
             speedUp = true;
             slowDown = false;
@@ -123,7 +128,22 @@ function draw() {
     //Vehicle Info
     fill(color("#E8E8E8"));
     rect(width - width*.8, height*.7, width - width*.85, height - height*.5, 10);
-
+    image(img,width*.13,height*.46,width*.14,height*.08);
+    line(width*.13, height *.56, width *.27, height*.56);
+    fill(1,1,1)
+    textSize(30);
+    text("Miles left: ", width*.232, height*.62);
+    text(ceil(milesLeft),width*.265, height*.62);
+    line(width*.13, height *.65, width *.27, height*.65);
+    text("MPG: ", width*.2, height*.72);
+    text(22,width*.23, height*.72);
+    line(width*.13, height *.76, width *.27, height*.76);
+    text("Trip: ", width*.2, height*.82);
+    text(ceil(trip),width*.23, height*.82);
+    line(width*.13, height *.85, width *.27, height*.85);
+    circle(width*.145, height*.89, height*.05);
+    text("Reset Trip ", width*.27, height*.90);
+    
     //Non-Vehicle Info
     fill(color("#E8E8E8"));
     rect(width - width*.15, height*.7, width - width*.75, height - height*.5, 10);
@@ -131,10 +151,24 @@ function draw() {
     //Engine Temp
     fill(color("#E8E8E8"));
     circle(width - width*.93, height*.6, width-width*.90);
+    fill(1,1,1);
+    textSize(20);
+    text("Engine Temp",width - width*.89, height*.49);
+    text("0°",width - width*.95, height*.62);
+    line(width*.07, height*.66, width*.09, height*.55);
+    text("180°",width - width*.885, height*.62);
+    circle(width - width*.93, height*.67, 20);
 
     //Gas Gaguge
     fill(color("#E8E8E8"));
     circle(width - width*.93, height*.8, width-width*.90);
+    fill(1,1,1);
+    textSize(20);
+    text("Gas Level",width - width*.895, height*.93);
+    text("0%",width - width*.95, height*.84);
+    line(width*.07, height*.86, width*.11, height*.8);
+    text("100°",width - width*.885, height*.84);
+    circle(width - width*.93, height*.87, 20);
 
     //left turn signal
     fill(color(blinkerColor));
