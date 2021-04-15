@@ -5,6 +5,7 @@ let leftTurn = false;
 let RightTurn = false;
 let firstPress = false;
 let currentSpeed = 0;
+let tacho = .10;
 let leftState = false;
 let blinkHigh = "#ff1414";
 let blinkLow = "#FFB8B8";
@@ -41,11 +42,23 @@ function draw() {
             }
         }
         if (keyCode == 87 && stopCar != true && currentSpeed <= 100) {
+            if(currentSpeed % 20 == 0){
+                tacho = .10;
+            }
+            else{
+                tacho += .03;
+            }           
             speedUp = true;
             slowDown = false;
             currentSpeed += 1;
         }
         else if (keyCode == 83 && stopCar != true && currentSpeed > 0) {
+            if(currentSpeed % 20 == 0){
+                tacho = .70;
+            }
+            else{
+                tacho -= .03;
+            }  
             slowDown = true;
             speedUp = false;
             currentSpeed -= 1
@@ -80,8 +93,13 @@ function draw() {
     line(width*.66, height*.1, width*.66, height*.4);
     text("5000", width*.79, height*.08);
     line(width*.82, height*.1, width*.82, height*.4);
-    
 
+    fill(color("#d3d3d3"));
+    rectMode(CORNERS);
+    rect(width*.01, height*.1, width*tacho, height*.4, 10);
+    //rect(width*.1, height*.1, width*tacho, heigh*.1);
+    
+    rectMode(CENTER);
     //Speedometer
     fill(color("#E8E8E8"));
     rect(width/2, height*.65, width - width*.6, height - height*.6, 10);
