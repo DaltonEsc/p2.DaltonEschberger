@@ -1,4 +1,17 @@
+let speedUp = false;
+let slowDown = false;
+let stopCar = false;
+let leftTurn = false;
+let RightTurn = false;
+let firstPress = false;
+let currentSpeed = 0;
+let leftState = false;
+let blinkHigh = "#ff1414";
+let blinkLow = "#FFB8B8";
+let blinkerColor = blinkLow;
+let blinkerColor2 = blinkLow;
 function setup() {
+
     let width = windowWidth-(windowWidth/6);
     let height = windowHeight-(windowHeight/8)
     let canvas = createCanvas(width, height);
@@ -6,17 +19,38 @@ function setup() {
 }
 
 function draw() {
-    // --------------------------------------------------------
-    // Controls section for the car dashboard
-    if (keyIsDown(UP_ARROW)) {
-        //speed up
+    if (frameCount % 60 == 0) { // if the frameCount is divisible by 60, then a second has passed. it will stop at 0
+        if (keyCode == 65 && leftTurn) {
+            if(leftState){
+                blinkerColor = blinkHigh;
+                leftState = false;
+            }
+            else{
+                blinkerColor = blinkLow;
+                leftState = true;
+            }
+        }
+        else if (keyCode == 68 && RightTurn) {
+            if(leftState){
+                blinkerColor2 = blinkHigh;
+                leftState = false;
+            }
+            else{
+                blinkerColor2 = blinkLow;
+                leftState = true;
+            }
+        }
+        if (keyCode == 87 && stopCar != true && currentSpeed <= 100) {
+            speedUp = true;
+            slowDown = false;
+            currentSpeed += 1;
+        }
+        else if (keyCode == 83 && stopCar != true && currentSpeed > 0) {
+            slowDown = true;
+            speedUp = false;
+            currentSpeed -= 1
+        }
     }
-    
-    if (keyIsDown(DOWN_ARROW)) {
-        //speed down
-    }
-    // --------------------------------------------------------
-    
 
     strokeWeight(4);
     stroke(51);
@@ -30,13 +64,33 @@ function draw() {
     fill(color("#FFB8B8"));
     rect(width/2, height*.25, width - width*.05, height - height*.7, 10);
     fill(color("#FFFDB8"));
-    rect(width/2, height*.25, width - width*.4, height - height*.7, 10);
+    rect(width/2, height*.25, width - width*.36, height - height*.7, 10);
     fill(color("#B8FFB8"));
-    rect(width-width*.65, height*.25, width - width*.35, height - height*.7, 10);
+    rect(width-width*.665, height*.25, width - width*.35, height - height*.7, 10);
+    fill(color(1,1,1));
+    textAlign(LEFT);
+    textSize(35);
+    text("1000", width*.13, height*.08);
+    line(width*.16, height*.1, width*.16, height*.4);
+    text("2000", width*.29, height*.08);
+    line(width*.32, height*.1, width*.32, height*.4);
+    text("3000", width*.47, height*.08);
+    line(width*.5, height*.1, width/2, height*.4);
+    text("4000", width*.63, height*.08);
+    line(width*.66, height*.1, width*.66, height*.4);
+    text("5000", width*.79, height*.08);
+    line(width*.82, height*.1, width*.82, height*.4);
+    
 
-    //Tachometer
+    //Speedometer
     fill(color("#E8E8E8"));
     rect(width/2, height*.65, width - width*.6, height - height*.6, 10);
+    fill(1,1,1);
+    textAlign(RIGHT);
+    textSize(150);
+    text(currentSpeed, width*.55, height*.75);
+    textSize(75);
+    text("MPH",  width*.7, height*.75);
 
     //Vehicle Info
     fill(color("#E8E8E8"));
@@ -48,18 +102,18 @@ function draw() {
 
     //Engine Temp
     fill(color("#E8E8E8"));
-    circle(width - width*.93, height*.6, width-width*.90, 10);
+    circle(width - width*.93, height*.6, width-width*.90);
 
     //Gas Gaguge
     fill(color("#E8E8E8"));
-    circle(width - width*.93, height*.8, width-width*.90, 10);
+    circle(width - width*.93, height*.8, width-width*.90);
 
-    //Right turn signal
-    fill(color("#FFB8B8"));
+    //left turn signal
+    fill(color(blinkerColor));
     triangle(width*.3, height*.90, width*.35, height*.925, width*.35, height*.875);
 
-    //Left turn signal
-    fill(color("#FFB8B8"));
+    //right turn signal
+    fill(color(blinkerColor2));
     triangle(width*.7, height*.90, width*.65, height*.925, width*.65, height*.875);
 
 }
@@ -69,10 +123,21 @@ function windowResized() {
 }
 
 function keyPressed() {
-    if (keyCode === LEFT_ARROW) {
-        //left turn signal;
-    } else if (keyCode === RIGHT_ARROW) {
-        //right turn signal;
+    if (keyCode == 87) {
+        stopCar = false
     }
-    
-  }
+    else if(keyCode == 83 && firstPress){
+        stopCar = false;
+        firstPress = false;
+    }
+    else if (keyCode == 83 && speedUp == true) {
+        stopCar = true;
+        firstPress = true;
+    }
+    if (keyCode == 65){
+        leftTurn = !leftTurn;
+    }
+    if (keyCode == 68){
+        RightTurn = !RightTurn;
+    }
+}
