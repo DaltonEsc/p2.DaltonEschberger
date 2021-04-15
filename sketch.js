@@ -232,9 +232,11 @@ function keyPressed() {
     }
     if (keyCode == 65){
         leftTurn = !leftTurn;
+        blinkerColor = blinkLow;
     }
     if (keyCode == 68){
         RightTurn = !RightTurn;
+        blinkerColor2 = blinkLow;
     }
     if(keyCode == 37){
         leftPressed();
